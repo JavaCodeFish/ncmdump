@@ -13,9 +13,9 @@ public class DefaultExecutable implements Executable<File> {
     @Override
     public void execute(File file) {
         long start = System.currentTimeMillis();
-        DefaultUnpackNcm unpackNcm = new DefaultUnpackNcm();
+        DefaultNcmConvert convert = new DefaultNcmConvert();
         try {
-            unpackNcm.ncm2NormalFormat(file);
+            convert.convert(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
