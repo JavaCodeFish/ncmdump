@@ -9,18 +9,16 @@ import java.io.FileFilter;
 public class DefaultFileIterator implements FileIterator {
     @Override
     public void iterator(File rootFile, final FileFilter filter, Executable<File> executable) {
+        //对文件进行处理
         if (!rootFile.isDirectory()){
-            executable.execute(rootFile);
+            if (filter.accept(rootFile)) {
+                executable.execute(rootFile);
+                return;
+            }
             return;
         }
-
-        File[] files = rootFile.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isDirectory() || filter.accept(pathname);
-            }
-        });
-
+        //对目录进行遍历
+        File[] files = rootFile.listFiles(pathname -> pathname.isDirectory() || filter.accept(pathname));
         if (files != null && files.length > 0){
             for (File file : files){
                 iterator(file,filter,executable);
